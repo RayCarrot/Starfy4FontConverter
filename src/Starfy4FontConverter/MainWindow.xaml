@@ -1,0 +1,24 @@
+﻿<Window x:Class="Starfy4FontConverter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Starfy4FontConverter"
+        mc:Ignorable="d"
+        Title="Starfy 4 Font Converter" 
+        Width="350" SizeToContent="Height"
+        ResizeMode="NoResize">
+    <Window.DataContext>
+        <local:ConverterViewModel />
+    </Window.DataContext>
+    <StackPanel Margin="10">
+
+        <Button Margin="0 0 0 5" 
+                Content="Convert binary font to font sheet"
+                Command="{Binding Path=ConvertBinToSheetCommand, Mode=OneTime}"/>
+
+        <Button Content="Import font sheet back to binary font"
+                Command="{Binding Path=ImportSheetToBinCommand, Mode=OneTime}" />
+
+    </StackPanel>
+</Window>

@@ -1,10 +1,56 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
+  <!-- Framework -->
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <!-- The target framework. Can be changed to 'TargetFrameworks' for multiple outputs. -->
     <TargetFramework>net472</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <LangVersion>10.0</LangVersion>
+    <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
-    <langversion>10</langversion>
+    <!-- Appears to be required when using framework earlier than net5 -->
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
+
+  <!-- Temp fix -->
+  <Target Name="Starfy_RemoveDuplicateAnalyzers" BeforeTargets="CoreCompile">
+    <ItemGroup>
+      <FilteredAnalyzer Include="@(Analyzer-&gt;Distinct())" />
+      <Analyzer Remove="@(Analyzer)" />
+      <Analyzer Include="@(FilteredAnalyzer)" />
+    </ItemGroup>
+  </Target>
+
+  <!-- Fody (Debug) -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <WeaverConfiguration>
+      <Weavers>
+
+      </Weavers>
+    </WeaverConfiguration>
+  </PropertyGroup>
+
+  <!-- Fody (Release) -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <WeaverConfiguration>
+      <Weavers>
+        <Costura IncludeDebugSymbols="false" />
+      </Weavers>
+    </WeaverConfiguration>
+  </PropertyGroup>
+
+  <!-- Package references -->
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
+    <PackageReference Include="Costura.Fody" Version="5.7.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <!-- Project references -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\submodules\BinarySerializer\src\BinarySerializer.csproj" />
+  </ItemGroup>
 
 </Project>
