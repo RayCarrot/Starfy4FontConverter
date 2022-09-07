@@ -171,9 +171,11 @@ public partial class ConverterViewModel : ObservableObject
                         currentPointer += sprite.Value.Size;
                     }
 
-                    fontSprites.Add(new Pointer<Starfy4FontSprite>(currentPointer, sprite));
+                    fontSprites.Add(sprite);
                 }
             }
+
+            font.FontSprites = fontSprites.ToArray();
 
             FileFactory.Write<Starfy4Font>(context, outputFilePath);
 
